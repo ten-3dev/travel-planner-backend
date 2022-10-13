@@ -1,7 +1,7 @@
 package com.example.travel_planner.entity;
 
-
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,26 +11,26 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-
-public class Plans {
+public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int idx;
 
     @ManyToOne
     @JoinColumn(name = "email", nullable = false)
     private Users email;
 
-    @Column(length = 50, nullable = false)
-    private String title;
-
     @Column(columnDefinition = "longtext", nullable = false)
-    private String plan;
+    private String content;
 
-    @Column(columnDefinition = "TINYINT", length=1, nullable = false)
-    private int type;
+    @Column(nullable = false)
+    private java.time.LocalDate date;
 
-    @Column(length = 50, nullable = false)
-    private String date;
+    @Column(nullable = false)
+    private int id;
+
+    @Column(nullable = false)
+    private String type;
+
+
 }

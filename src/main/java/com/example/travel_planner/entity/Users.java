@@ -26,6 +26,6 @@ public class Users {
     private String profileImg;
     @Column(length = 12, nullable = false)
     private int tel;
-    @Column(length = 50, nullable = false)
+    @Column(nullable = false)
     private java.time.LocalDate birth;
 }
