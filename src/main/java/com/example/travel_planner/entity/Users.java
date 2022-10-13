@@ -7,13 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
+@Entity //JPA로 관리되는 엔티티객체. 즉 테이블
 @Table
 @ToString
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor //빈생성자
 public class Users {
     @Id
     private String email;
