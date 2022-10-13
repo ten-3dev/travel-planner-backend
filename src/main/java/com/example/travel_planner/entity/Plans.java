@@ -13,9 +13,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 
 
-public class Plan {
+public class Plans {
     @Id
-    private String id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "email", nullable = false)
@@ -28,9 +28,8 @@ public class Plan {
     private String plan;
 
     @Column(columnDefinition = "TINYINT", length=1, nullable = false)
-    private String type;
+    private int type;
 
     @Column(length = 50, nullable = false)
-    private java.time.LocalDate date;
-
+    private String date;
 }
