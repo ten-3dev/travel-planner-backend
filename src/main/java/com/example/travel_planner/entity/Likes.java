@@ -5,13 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "likes")
+@Table
 @ToString
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Like {
+public class Likes {
     @ManyToOne
     @JoinColumn(name ="email", nullable = false)
     private Users email;
