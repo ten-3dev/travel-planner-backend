@@ -1,17 +1,13 @@
 package com.example.travel_planner.controller;
 
-import com.example.travel_planner.service.UserService;
+import com.example.travel_planner.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
-public class UserController {
-
+public class CommentController {
     @Autowired
-    private UserService userService;
-
+    CommentService commentService;
 }
