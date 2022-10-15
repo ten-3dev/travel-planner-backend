@@ -12,11 +12,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Likes {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int likeidx;
+
     @ManyToOne
     @JoinColumn(name ="email", nullable = false)
     private Users email;
 
-    @Id // 임시방편
+    @Column(length = 50, nullable = false)
     private String type;
 
     @ManyToOne
