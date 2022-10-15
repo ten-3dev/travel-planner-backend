@@ -17,7 +17,6 @@ import javax.persistence.Table;
 public class Users {
     @Id
     private String email;
-
     @Column(length = 50, nullable = false)
     private String password;
     @Column(length = 50, nullable = false)
@@ -25,7 +24,7 @@ public class Users {
     @Column(length = 50)
     private String profileImg;
     @Column(length = 12, nullable = false)
-    private int tel;
+    private String tel;
     @Column(nullable = false)
     private java.time.LocalDate birth;
 }
