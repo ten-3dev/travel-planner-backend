@@ -1,8 +1,7 @@
-package com.example.travel_planner.config.jwt;
+package com.example.travel_planner.config;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
