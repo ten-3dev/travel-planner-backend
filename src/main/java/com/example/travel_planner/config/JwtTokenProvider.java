@@ -1,4 +1,4 @@
-package com.example.travel_planner.service.jwt;
+package com.example.travel_planner.config.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
