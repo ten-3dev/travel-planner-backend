@@ -1,6 +1,7 @@
 package com.example.travel_planner.controller;
 
 import com.example.travel_planner.config.JwtTokenProvider;
+import com.example.travel_planner.config.StatusCode;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.service.CommentService;
 import com.example.travel_planner.service.LikeService;
@@ -8,6 +9,7 @@ import com.example.travel_planner.service.PlanService;
 import com.example.travel_planner.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,14 +48,23 @@ public class Controller {
         return userService.getUserInfo(token);
     }
 
-    @PostMapping("/tokenAuth")
-    public void tokenAuth(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-        System.out.println(jwtTokenProvider.getUserEmailFromToken(token.split(" ")[1]));
-    }
-
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody Users user) {
         return userService.register(user);
+    }
+
+    @PostMapping("/tokenAuth") // 그저 테스트
+    public ResponseEntity tokenAuth(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if(jwtTokenProvider.validateAccessToken(token.split(" ")[1])){
+            return new StatusCode(HttpStatus.OK, "인증 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
+        }
+    }
+
+    @PostMapping("/getTokenUsedRefreshToken")
+    public ResponseEntity getTokenUsedRefreshToken(@RequestBody Map<String, String> data){
+        return userService.getTokenUsedRefreshToken(data);
     }
 }

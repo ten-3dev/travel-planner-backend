@@ -9,6 +9,8 @@ import com.example.travel_planner.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.*;
 
 @Service
@@ -80,6 +82,17 @@ public class UserService {
             return new StatusCode(HttpStatus.OK, "회원 가입이 완료되었습니다!").sendResponse();
         } catch (Exception e) {
             return new StatusCode(HttpStatus.BAD_REQUEST, "서버에 에러가 발생했습니다.").sendResponse();
+        }
+    }
+
+    public ResponseEntity getTokenUsedRefreshToken(Map<String, String> data){
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        Map<String, String> token = jwtTokenProvider.generateAccessToken(data.get("refreshToken"));
+
+        if(token.get("access_token") != null){ // 성공적으로 재발급이 됨
+            return new StatusCode(HttpStatus.OK, token, "액세스 토큰 재발급 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.INTERNAL_SERVER_ERROR, "리프레쉬 토큰이 만료되었거나, 알 수 없는 에러").sendResponse();
         }
     }
 }
