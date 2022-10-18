@@ -8,6 +8,8 @@ import com.example.travel_planner.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 import java.util.*;
 
 @Service
@@ -44,5 +46,15 @@ public class UserService {
             return new StatusCode(HttpStatus.OK, tokens, "로그인 성공!").sendResponse();
         }
         return new StatusCode(HttpStatus.NOT_FOUND, "로그인 실패! 로그인 또는 비밀번호를 확인해주세요.").sendResponse();
+    }
+
+    public ResponseEntity checkEmail(String token){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){ // 인증된 유저
+            return new StatusCode(HttpStatus.OK, "이메일이 맞음").sendResponse();
+        }else{ // 누규..?
+            return new StatusCode(HttpStatus.BAD_REQUEST, "이미 만료된 유저임").sendResponse();
+        }
     }
 }
