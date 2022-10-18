@@ -43,5 +43,10 @@ public class Controller {
     public ResponseEntity checkEmail(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         return userService.checkEmail(token);
     }
+
+    @GetMapping("/getUserInfo")
+    public ResponseEntity getUserInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        return userService.getUserInfo();
+    }
 }
 

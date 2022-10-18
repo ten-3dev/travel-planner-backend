@@ -57,4 +57,14 @@ public class UserService {
             return new StatusCode(HttpStatus.BAD_REQUEST, "이미 만료된 유저임").sendResponse();
         }
     }
+
+    public ResponseEntity getUserInfo(String token){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){ // 인증된 유저
+            return new StatusCode(HttpStatus.OK,"유저 정보 조회 성공").sendResponse();
+        }else{ // 누규..?
+            return new StatusCode(HttpStatus.BAD_REQUEST, "이미 만료된 유저임").sendResponse();
+        }
+    }
 }
