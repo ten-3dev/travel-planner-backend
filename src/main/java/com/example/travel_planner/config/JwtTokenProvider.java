@@ -1,14 +1,8 @@
 package com.example.travel_planner.config;
 
-import com.example.travel_planner.dto.UserDTO;
-import com.sun.tools.jconsole.JConsoleContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
