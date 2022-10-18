@@ -1,5 +1,6 @@
 package com.example.travel_planner.controller;
 
+import com.example.travel_planner.config.JwtTokenProvider;
 import com.example.travel_planner.service.CommentService;
 import com.example.travel_planner.service.LikeService;
 import com.example.travel_planner.service.PlanService;
@@ -47,6 +48,12 @@ public class Controller {
     @GetMapping("/getUserInfo")
     public ResponseEntity getUserInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         return userService.getUserInfo(token);
+    }
+
+    @PostMapping("/tokenAuth")
+    public void tokenAuth(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        System.out.println(jwtTokenProvider.getUserEmailFromToken(token.split(" ")[1]));
     }
 }
 

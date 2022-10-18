@@ -1,5 +1,6 @@
 package com.example.travel_planner.config;
 
+import com.example.travel_planner.dto.UserDTO;
 import com.sun.tools.jconsole.JConsoleContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -40,6 +41,7 @@ public class JwtTokenProvider {
         return result;
     }
 
+    // 토큰이 만료가 되었는지 안됐는지 확인하는 함수
     public boolean validateAccessToken(String token) {
         try {
             Claims claims = Jwts.parser().setSigningKey(JWT_SECRET_ACCESS).parseClaimsJws(token).getBody();
@@ -48,6 +50,17 @@ public class JwtTokenProvider {
             System.out.println(e);
         }
         return false;
+    }
+
+    // 토큰 안에 있는 사용자의 이메일을 주는 함수
+    public String getUserEmailFromToken(String token){
+        try {
+            Claims claims = Jwts.parser().setSigningKey(JWT_SECRET_ACCESS).parseClaimsJws(token).getBody();
+            return (String) claims.get("sub");
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 }
 
