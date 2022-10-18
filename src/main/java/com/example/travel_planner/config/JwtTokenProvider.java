@@ -1,7 +1,13 @@
 package com.example.travel_planner.config;
 
+import com.sun.tools.jconsole.JConsoleContext;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +38,16 @@ public class JwtTokenProvider {
         result.put("refresh_token", refresh_token);
         result.put("access_token", access_token);
         return result;
+    }
+
+    public boolean validateAccessToken(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(JWT_SECRET_ACCESS).parseClaimsJws(token).getBody();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
     }
 }
 

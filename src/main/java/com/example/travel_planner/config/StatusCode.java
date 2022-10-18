@@ -24,10 +24,10 @@ public class StatusCode {
         this.msg = msg;
     }
 
-    public ResponseEntity sendResponse(){
-        Map<String, Object> data = new HashMap<>();
-        if(this.data != null) data.put("data", this.data);
-        data.put("msg", this.msg);
-        return new ResponseEntity<>(data, this.statusCode);
+        public ResponseEntity sendResponse(){
+            Map<String, Object> data = new HashMap<>();
+            if(this.data != null) data.put("data", this.data);
+            data.put("msg", this.msg);
+            return new ResponseEntity<>(data, this.statusCode);
     }
 }

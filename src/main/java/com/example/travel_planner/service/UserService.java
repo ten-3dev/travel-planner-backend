@@ -7,9 +7,7 @@ import com.example.travel_planner.repository.UserRepository;
 import com.example.travel_planner.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.*;
 
 @Service
@@ -35,7 +33,6 @@ public class UserService {
         return new StatusCode(HttpStatus.BAD_REQUEST, "알 수 없는 오류로 잠시 후 로그인을 시도해주세요.").sendResponse();
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity login(Map<String, String> data){
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         Optional<Users> resultEmail = userRepository.findById(data.get("email"));
