@@ -46,7 +46,7 @@ public class Controller {
 
     @GetMapping("/getUserInfo")
     public ResponseEntity getUserInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-        return userService.getUserInfo();
+        return userService.getUserInfo(token);
     }
 }
 
