@@ -32,5 +32,10 @@ public class Controller {
     public ResponseEntity login(@RequestBody Map<String, String> data){
         return userService.login(data);
     }
+
+    @GetMapping("/sign")
+    public String signUp(){
+        return "/sign";
+    }
 }
 

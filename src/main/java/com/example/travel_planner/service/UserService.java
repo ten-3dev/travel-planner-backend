@@ -7,6 +7,7 @@ import com.example.travel_planner.repository.UserRepository;
 import com.example.travel_planner.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.*;
