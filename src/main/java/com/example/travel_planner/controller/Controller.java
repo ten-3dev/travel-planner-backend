@@ -1,16 +1,13 @@
 package com.example.travel_planner.controller;
 
 import com.example.travel_planner.config.JwtTokenProvider;
-import com.example.travel_planner.dto.UserDTO;
 import com.example.travel_planner.entity.Users;
-import com.example.travel_planner.repository.UserRepository;
 import com.example.travel_planner.service.CommentService;
 import com.example.travel_planner.service.LikeService;
 import com.example.travel_planner.service.PlanService;
 import com.example.travel_planner.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,10 +55,5 @@ public class Controller {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody Users user) {
         return userService.register(user);
-    }
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
     }
 }

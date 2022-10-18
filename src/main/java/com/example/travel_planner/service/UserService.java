@@ -2,17 +2,13 @@ package com.example.travel_planner.service;
 
 import com.example.travel_planner.config.KakaoProvider;
 import com.example.travel_planner.config.StatusCode;
-import com.example.travel_planner.dto.UserDTO;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.repository.UserRepository;
 import com.example.travel_planner.config.JwtTokenProvider;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
-
 import java.util.*;
 
 @Service
