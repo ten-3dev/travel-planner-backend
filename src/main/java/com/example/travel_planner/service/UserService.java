@@ -59,6 +59,7 @@ public class UserService {
     public ResponseEntity checkEmail(Map<String, String> email ) {
         Optional<Users> resultEmail = userRepository.findById(email.get("email"));
         if (resultEmail.isPresent()) {
+            System.out.println(resultEmail);
             return new StatusCode(HttpStatus.OK, "이메일이 있음").sendResponse();
         } else {
             return new StatusCode(HttpStatus.BAD_REQUEST, "없는 이메일 입니다").sendResponse();
@@ -69,7 +70,10 @@ public class UserService {
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if (jwtTokenProvider.validateAccessToken(tokenFilter)) { // 인증된 유저
+            String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+            Optional<Users> resultEmail = userRepository.findById(getUserEmailFromToken);
 
+            System.out.println(resultEmail);
             return new StatusCode(HttpStatus.OK, "유저 정보 조회 성공").sendResponse();
         } else { // 누규..?
             return new StatusCode(HttpStatus.BAD_REQUEST, "이미 만료된 유저임").sendResponse();
