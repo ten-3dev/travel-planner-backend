@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -66,5 +67,10 @@ public class Controller {
     @PostMapping("/getTokenUsedRefreshToken")
     public ResponseEntity getTokenUsedRefreshToken(@RequestBody Map<String, String> data){
         return userService.getTokenUsedRefreshToken(data);
+    }
+
+    @PostMapping("/uploadFile")
+    public ResponseEntity uploadFile(MultipartFile[] multipartFiles){
+        return userService.uploadFile(multipartFiles);
     }
 }

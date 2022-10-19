@@ -8,6 +8,8 @@ import com.example.travel_planner.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.*;
 
 @Service
@@ -90,5 +92,9 @@ public class UserService {
         }else{
             return new StatusCode(HttpStatus.INTERNAL_SERVER_ERROR, "리프레쉬 토큰이 만료되었거나, 알 수 없는 에러").sendResponse();
         }
+    }
+
+    public ResponseEntity uploadFile(MultipartFile[] multipartFiles){
+        return new StatusCode(HttpStatus.OK, "임시").sendResponse();
     }
 }
