@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -150,13 +151,18 @@ public class UserService {
         }
         return new StatusCode(HttpStatus.OK, "업로드 성공").sendResponse();
     }
-
+    @Transactional
     public ResponseEntity passwordChange(Map<String, String> email) {
         Optional<Users> resultEmail = userRepository.findById(email.get("state"));
         if (resultEmail.isPresent()) {
-            if(email.get("pw").equals("pwRe")){
-                return new StatusCode(HttpStatus.OK, "이메일이 있음").sendResponse();}
-            return new StatusCode(HttpStatus.OK, "이메일이 있음").sendResponse();
+            if(email.get("pw").equals(email.get("pwRe"))){
+               Users users = Users.builder().email(resultEmail.get().getEmail()).password(email.get("pw")).build();
+               System.out.println(userRepository.save(users));
+                return new StatusCode(HttpStatus.OK, "비밀번호 변경").sendResponse();
+            }else{
+                return new StatusCode(HttpStatus.BAD_REQUEST, "비밀번호가 다릅니다.").sendResponse();
+            }
+
         } else {
             return new StatusCode(HttpStatus.BAD_REQUEST, "없는 이메일 입니다").sendResponse();
         }
