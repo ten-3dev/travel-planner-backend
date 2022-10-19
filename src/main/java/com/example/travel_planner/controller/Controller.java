@@ -39,8 +39,8 @@ public class Controller {
     }
 
     @GetMapping("/checkEmail")
-    public ResponseEntity checkEmail(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        return userService.checkEmail(token);
+    public ResponseEntity checkEmail(@RequestBody Map<String, String> email) {
+        return userService.checkEmail(email);
     }
 
     @GetMapping("/getUserInfo")

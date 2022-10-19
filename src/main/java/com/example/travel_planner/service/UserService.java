@@ -14,7 +14,7 @@ import java.util.*;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-
+    @SuppressWarnings("uncheked")
     public ResponseEntity getUserInfoKakao(String token) {
         KakaoProvider kakaoProvider = new KakaoProvider();
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
@@ -46,13 +46,12 @@ public class UserService {
         return new StatusCode(HttpStatus.NOT_FOUND, "로그인 실패! 로그인 또는 비밀번호를 확인해주세요.").sendResponse();
     }
 
-    public ResponseEntity checkEmail(String token) {
-        String tokenFilter = token.split(" ")[1];
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-        if (jwtTokenProvider.validateAccessToken(tokenFilter)) { // 인증된 유저
-            return new StatusCode(HttpStatus.OK, "이메일이 맞음").sendResponse();
-        } else { // 누규..?
-            return new StatusCode(HttpStatus.BAD_REQUEST, "이미 만료된 유저임").sendResponse();
+    public ResponseEntity checkEmail(Map<String, String> email ) {
+        Optional<Users> resultEmail = userRepository.findById(email.get("email"));
+        if (resultEmail.isPresent()) {
+            return new StatusCode(HttpStatus.OK, "이메일이 있음").sendResponse();
+        } else {
+            return new StatusCode(HttpStatus.BAD_REQUEST, "없는 이메일 입니다").sendResponse();
         }
     }
 
