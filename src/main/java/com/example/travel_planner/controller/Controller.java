@@ -103,4 +103,9 @@ public class Controller {
         }
         return fileArray;
     }
+
+    @PostMapping("/passwordChange")
+    public ResponseEntity passwordChange(@RequestBody Map<String, String> email) {
+        return userService.checkEmail(email);
+    }
 }

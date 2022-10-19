@@ -150,4 +150,15 @@ public class UserService {
         }
         return new StatusCode(HttpStatus.OK, "업로드 성공").sendResponse();
     }
+
+    public ResponseEntity passwordChange(Map<String, String> email) {
+        Optional<Users> resultEmail = userRepository.findById(email.get("state"));
+        if (resultEmail.isPresent()) {
+            if(email.get("pw").equals("pwRe")){
+                return new StatusCode(HttpStatus.OK, "이메일이 있음").sendResponse();}
+            return new StatusCode(HttpStatus.OK, "이메일이 있음").sendResponse();
+        } else {
+            return new StatusCode(HttpStatus.BAD_REQUEST, "없는 이메일 입니다").sendResponse();
+        }
+    }
 }
