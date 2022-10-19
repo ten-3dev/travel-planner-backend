@@ -39,7 +39,7 @@ public class Controller {
         return userService.login(data);
     }
 
-    @GetMapping("/checkEmail")
+    @PostMapping("/checkEmail")
     public ResponseEntity checkEmail(@RequestBody Map<String, String> email) {
         return userService.checkEmail(email);
     }

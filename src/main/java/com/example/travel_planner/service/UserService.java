@@ -51,6 +51,7 @@ public class UserService {
     public ResponseEntity checkEmail(Map<String, String> email ) {
         Optional<Users> resultEmail = userRepository.findById(email.get("email"));
         if (resultEmail.isPresent()) {
+            System.out.println(resultEmail);
             return new StatusCode(HttpStatus.OK, "이메일이 있음").sendResponse();
         } else {
             return new StatusCode(HttpStatus.BAD_REQUEST, "없는 이메일 입니다").sendResponse();
