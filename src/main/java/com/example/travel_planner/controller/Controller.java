@@ -49,6 +49,13 @@ public class Controller {
         return userService.getUserInfo(token);
     }
 
+    @PostMapping("/getUserUpdate")
+    public ResponseEntity getUserUpdate(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+       return userService.getUserUpdate(token);
+    }
+
+
+
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody Users user) {
         return userService.register(user);

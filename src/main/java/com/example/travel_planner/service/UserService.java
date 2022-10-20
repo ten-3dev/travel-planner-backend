@@ -2,7 +2,6 @@ package com.example.travel_planner.service;
 
 import com.example.travel_planner.config.KakaoProvider;
 import com.example.travel_planner.config.StatusCode;
-import com.example.travel_planner.dto.UserDTO;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.repository.UserRepository;
 import com.example.travel_planner.config.JwtTokenProvider;
@@ -76,6 +75,33 @@ public class UserService {
             return new StatusCode(HttpStatus.OK,resultEmail, "유저 정보 조회 성공").sendResponse();
         } else {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "이미 만료된 유저임").sendResponse();
+        }
+    }
+
+    public ResponseEntity getUserUpdate(String token){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
+            String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+            Optional<Users> resultEmail =  userRepository.findById(getUserEmailFromToken);
+
+            System.out.println(resultEmail);
+//            Users users = Users.builder()
+//                    .email(resultEmail.get().getEmail())
+//                    .name(resultEmail.get().getName())
+//                    .birth(resultEmail.get().getBirth())
+//                    .password(resultEmail.get().getPassword())
+//                    .tel(resultEmail.get().getTel())
+//                    .profileImg(resultEmail.get().getProfileImg())
+//                    .build();
+//            userRepository.save(users);
+
+            //아 모르겠다...
+
+           return new StatusCode(HttpStatus.OK, "회원수정성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "회원수정실패").sendResponse();
         }
     }
 
