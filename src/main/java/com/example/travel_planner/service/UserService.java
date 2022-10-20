@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -78,6 +81,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public ResponseEntity getUserUpdate(String token, Map<String, String> data){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
@@ -103,6 +107,7 @@ public class UserService {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "회원수정실패").sendResponse();
         }
     }
+    @Transactional
     public ResponseEntity getUserUpdatePw(String token, Map<String, String> data){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
@@ -133,6 +138,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public ResponseEntity register(Users user) {
         try {
             // 이메일 중복 검사
@@ -226,5 +232,35 @@ public class UserService {
         } else {
             return new StatusCode(HttpStatus.BAD_REQUEST, "없는 이메일 입니다").sendResponse();
         }
+    }
+
+    public byte[] getImage(String value) throws IOException {
+        FileInputStream fis = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+//        String fileDir = "C:\\Users\\YJ\\Downloads\\spring boot\\travel_planner\\build\\classes\\java\\main\\resources\\images\\" + value; // 파일경로
+        String fileDir = resourceLoader.getResource("classpath:").getURI().getPath().toString() + "resources\\images\\" + value;
+
+        try{
+            fis = new FileInputStream(fileDir);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        int readCount = 0;
+        byte[] buffer = new byte[1024];
+        byte[] fileArray = null;
+
+        try{
+            while((readCount = fis.read(buffer)) != -1){
+                baos.write(buffer, 0, readCount);
+            }
+            fileArray = baos.toByteArray();
+            fis.close();
+            baos.close();
+        } catch(IOException e){
+            throw new RuntimeException("File Error");
+        }
+        return fileArray;
     }
 }
