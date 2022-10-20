@@ -59,7 +59,7 @@ public class UserService {
         return new StatusCode(HttpStatus.NOT_FOUND, "로그인 실패! 로그인 또는 비밀번호를 확인해주세요.").sendResponse();
     }
 
-    public ResponseEntity checkEmail(Map<String, String> email ) {
+    public ResponseEntity checkEmail(Map<String, String> email) {
         Optional<Users> resultEmail = userRepository.findById(email.get("email"));
         if (resultEmail.isPresent()) {
             System.out.println(resultEmail);
@@ -75,20 +75,20 @@ public class UserService {
         if (jwtTokenProvider.validateAccessToken(tokenFilter)) { // 인증된 유저
             String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
             Optional<Users> resultEmail = userRepository.findById(getUserEmailFromToken);
-            return new StatusCode(HttpStatus.OK,resultEmail, "유저 정보 조회 성공").sendResponse();
+            return new StatusCode(HttpStatus.OK, resultEmail, "유저 정보 조회 성공").sendResponse();
         } else {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "이미 만료된 유저임").sendResponse();
         }
     }
 
     @Transactional
-    public ResponseEntity getUserUpdate(String token, Map<String, String> data){
+    public ResponseEntity getUserUpdate(String token, Map<String, String> data) {
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 
-        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
+        if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
             String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
-            Optional<Users> resultEmail =  userRepository.findById(getUserEmailFromToken);
+            Optional<Users> resultEmail = userRepository.findById(getUserEmailFromToken);
 
             Users users = Users.builder()
                     .email(resultEmail.get().getEmail())
@@ -100,11 +100,26 @@ public class UserService {
                     .build();
             userRepository.save(users);
 
-           return new StatusCode(HttpStatus.OK, "회원수정성공").sendResponse();
-        }else{
+            return new StatusCode(HttpStatus.OK, "회원수정성공").sendResponse();
+        } else {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "회원수정실패").sendResponse();
         }
     }
+
+    @Transactional
+    public ResponseEntity userDelete(String token, Map<String, String> data){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        String email = data.get("email");
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
+            userRepository.deleteById(email);
+            return new StatusCode(HttpStatus.OK, "회원탈퇴성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "회원탈퇴실패").sendResponse();
+        }
+    }
+
+
     @Transactional
     public ResponseEntity getUserUpdatePw(String token, Map<String, String> data){
         String tokenFilter = token.split(" ")[1];

@@ -55,8 +55,11 @@ public class Controller {
     public ResponseEntity getUserUpdate(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data) {
        return userService.getUserUpdate(token, data);
     }
-
-
+    @CrossOrigin
+    @PostMapping("/userDelete")
+    public ResponseEntity userDelete(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
+        return userService.userDelete(token, data);
+    }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody Users user) {
