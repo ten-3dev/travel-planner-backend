@@ -219,11 +219,18 @@ public class UserService {
     }
     @Transactional
     public ResponseEntity passwordChange(Map<String, String> email) {
-        Optional<Users> resultEmail = userRepository.findById(email.get("state"));
+        Optional<Users> resultEmail = userRepository.findById(email.get("email"));
         if (resultEmail.isPresent()) {
             if(email.get("pw").equals(email.get("pwRe"))){
-               Users users = Users.builder().email(resultEmail.get().getEmail()).password(email.get("pw")).build();
-               System.out.println(userRepository.save(users));
+                Users users = Users.builder()
+                        .email(resultEmail.get().getEmail())
+                        .name(resultEmail.get().getName())
+                        .birth(resultEmail.get().getBirth())
+                        .password(email.get("pw"))
+                        .tel(resultEmail.get().getTel())
+                        .profileImg(resultEmail.get().getProfileImg())
+                        .build();
+                userRepository.save(users);
                 return new StatusCode(HttpStatus.OK, "비밀번호 변경").sendResponse();
             }else{
                 return new StatusCode(HttpStatus.BAD_REQUEST, "비밀번호가 다릅니다.").sendResponse();
