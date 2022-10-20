@@ -108,27 +108,31 @@ public class UserService {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         //회원 수정란 비밀번호 변경임 안에 내용 수정해야함
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
-            Optional<Users> resultEmail =  userRepository.findById(getUserEmailFromToken);
+            if(data.get("pw").equals(data.get("pwRe"))) {
+                String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+                Optional<Users> resultEmail = userRepository.findById(getUserEmailFromToken);
 
-            System.out.println("userInfo: :" +  resultEmail);
-            System.out.println("data: :" +  data);
-            Users users = Users.builder()
-                    .email(resultEmail.get().getEmail())
-                    .name(resultEmail.get().getName())
-                    .birth(resultEmail.get().getBirth())
-                    .password(data.get("password"))
-                    .tel(resultEmail.get().getTel())
-                    .profileImg(resultEmail.get().getProfileImg())
-                    .build();
-            userRepository.save(users);
+//                System.out.println("userInfo: :" + resultEmail);
+//                System.out.println("data: :" + data);
 
-            return new StatusCode(HttpStatus.OK, "비밀번호변경 성공").sendResponse();
-        }else{
+//                Users users = Users.builder()
+//                        .email(resultEmail.get().getEmail())
+//                        .name(resultEmail.get().getName())
+//                        .birth(resultEmail.get().getBirth())
+//                        .password(data.get("pw"))
+//                        .tel(resultEmail.get().getTel())
+//                        .profileImg(resultEmail.get().getProfileImg())
+//                        .build();
+//                userRepository.save(users);
+                return new StatusCode(HttpStatus.OK, "비밀번호변경 성공").sendResponse();
+            }else {
+                return new StatusCode(HttpStatus.UNAUTHORIZED, "비밀번호가 다릅니다.").sendResponse();
+            }
+        } else {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "비밀번호변경 실패").sendResponse();
         }
-        
     }
+
     public ResponseEntity register(Users user) {
         try {
             // 이메일 중복 검사
