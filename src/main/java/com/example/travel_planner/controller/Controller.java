@@ -50,8 +50,8 @@ public class Controller {
     }
 
     @PostMapping("/getUserUpdate")
-    public ResponseEntity getUserUpdate(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-       return userService.getUserUpdate(token);
+    public ResponseEntity getUserUpdate(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data) {
+       return userService.getUserUpdate(token, data);
     }
 
 

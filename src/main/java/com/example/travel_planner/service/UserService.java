@@ -78,7 +78,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity getUserUpdate(String token){
+    public ResponseEntity getUserUpdate(String token, Map<String, String> data){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 
@@ -86,16 +86,17 @@ public class UserService {
             String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
             Optional<Users> resultEmail =  userRepository.findById(getUserEmailFromToken);
 
-            System.out.println(resultEmail);
-//            Users users = Users.builder()
-//                    .email(resultEmail.get().getEmail())
-//                    .name(resultEmail.get().getName())
-//                    .birth(resultEmail.get().getBirth())
-//                    .password(resultEmail.get().getPassword())
-//                    .tel(resultEmail.get().getTel())
-//                    .profileImg(resultEmail.get().getProfileImg())
-//                    .build();
-//            userRepository.save(users);
+            System.out.println("userInfo: :" +  resultEmail);
+            System.out.println("data: :" +  data);
+            Users users = Users.builder()
+                    .email(resultEmail.get().getEmail())
+                    .name(data.get("name"))
+                    .birth(resultEmail.get().getBirth())
+                    .password(resultEmail.get().getPassword())
+                    .tel(data.get("tel"))
+                    .profileImg(resultEmail.get().getProfileImg())
+                    .build();
+            userRepository.save(users);
 
             //아 모르겠다...
 
@@ -160,7 +161,13 @@ public class UserService {
                     fileSave.mkdirs();
                 }
 
-                Users users = Users.builder().tel(user.get().getTel()).email(user.get().getEmail()).birth(user.get().getBirth()).name(user.get().getName()).password(user.get().getPassword()).profileImg(fileId + "." + fileExtension).build();
+                Users users = Users.builder().
+                                tel(user.get().getTel())
+                                .email(user.get().getEmail())
+                                .birth(user.get().getBirth())
+                                .name(user.get().getName())
+                                .password(user.get().getPassword())
+                                .profileImg(fileId + "." + fileExtension).build();
                 userRepository.save(users);
 
 
