@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int commentidx;
+    private int idx;
 
     @ManyToOne
     @JoinColumn(name = "email", nullable = false)
