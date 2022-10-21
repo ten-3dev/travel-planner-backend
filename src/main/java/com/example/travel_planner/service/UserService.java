@@ -115,7 +115,7 @@ public class UserService {
             Optional<Users> resultEmail = userRepository.findById(getUserEmailFromToken);
 
             Users users = Users.builder()
-                    .email("email")
+                    .email(data.get("email"))
                     .name(resultEmail.get().getName())
                     .birth(resultEmail.get().getBirth())
                     .password(resultEmail.get().getPassword())
