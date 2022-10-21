@@ -110,9 +110,19 @@ public class UserService {
     public ResponseEntity userDelete(String token, Map<String, String> data){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-        String email = data.get("email");
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            userRepository.deleteById(email);
+            String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+            Optional<Users> resultEmail = userRepository.findById(getUserEmailFromToken);
+
+            Users users = Users.builder()
+                    .email("email")
+                    .name(resultEmail.get().getName())
+                    .birth(resultEmail.get().getBirth())
+                    .password(resultEmail.get().getPassword())
+                    .tel(resultEmail.get().getTel())
+                    .profileImg(resultEmail.get().getProfileImg())
+                    .build();
+            userRepository.delete(users);
             return new StatusCode(HttpStatus.OK, "회원탈퇴성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "회원탈퇴실패").sendResponse();
