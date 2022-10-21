@@ -107,22 +107,18 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity userDelete(String token, Map<String, String> data){
+    public ResponseEntity userDelete(String token){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
             String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
             Optional<Users> resultEmail = userRepository.findById(getUserEmailFromToken);
 
-            Users users = Users.builder()
-                    .email(data.get("email"))
-                    .name(resultEmail.get().getName())
-                    .birth(resultEmail.get().getBirth())
-                    .password(resultEmail.get().getPassword())
-                    .tel(resultEmail.get().getTel())
-                    .profileImg(resultEmail.get().getProfileImg())
-                    .build();
-            userRepository.delete(users);
+            if(resultEmail.isPresent()){
+                userRepository.delete(resultEmail.get());
+            } else {
+                return new StatusCode(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다.").sendResponse();
+            }
             return new StatusCode(HttpStatus.OK, "회원탈퇴성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "회원탈퇴실패").sendResponse();

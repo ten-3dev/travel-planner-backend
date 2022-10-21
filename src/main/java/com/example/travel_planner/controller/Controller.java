@@ -57,8 +57,8 @@ public class Controller {
     }
     @CrossOrigin
     @DeleteMapping("/userDelete")
-    public ResponseEntity userDelete(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
-        return userService.userDelete(token, data);
+    public ResponseEntity userDelete(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        return userService.userDelete(token);
     }
 
     @PostMapping("/register")
