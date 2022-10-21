@@ -95,4 +95,14 @@ public class Controller {
     public ResponseEntity passwordChange(@RequestBody Map<String, String> email) {
         return userService.passwordChange(email);
     }
+
+    @PostMapping("getLikes")
+    public ResponseEntity getLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        return likeService.getLikes(token);
+    }
+
+    @PostMapping("addLikes")
+    public ResponseEntity addLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
+        return likeService.addLikes(token, data);
+    }
 }
