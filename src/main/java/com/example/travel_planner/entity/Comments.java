@@ -1,7 +1,6 @@
 package com.example.travel_planner.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -16,7 +15,7 @@ public class Comments {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email", nullable = false)
     private Users email;
 

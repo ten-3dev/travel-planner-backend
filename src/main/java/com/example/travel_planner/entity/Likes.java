@@ -16,7 +16,11 @@ public class Likes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int likeidx;
 
-    @ManyToOne
+//    @ManyToOne
+//    @JoinColumn(name ="email", nullable = false)
+//    private Users email;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="email", nullable = false)
     private Users email;
 
@@ -25,4 +29,6 @@ public class Likes {
 
     @Column(length = 50, nullable = false)
     private String id;
+
+
 }

@@ -18,7 +18,7 @@ public class Plans {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email", nullable = false)
     private Users email;
 
