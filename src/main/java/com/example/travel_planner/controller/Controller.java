@@ -105,4 +105,14 @@ public class Controller {
     public ResponseEntity addLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
         return likeService.addLikes(token, data);
     }
+
+    @PostMapping("addComment")
+    public ResponseEntity addComment(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
+        return commentService.addComment(token, data);
+    }
+
+    @PostMapping("getComment")
+    public ResponseEntity getComment(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        return commentService.getComment(token);
+    }
 }
