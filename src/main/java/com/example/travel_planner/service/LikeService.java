@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,13 +23,14 @@ public class LikeService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public ResponseEntity getLikes(String token){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
             Optional<Users> user = userRepository.findById(jwtTokenProvider.getUserEmailFromToken(tokenFilter));
-            System.out.println(user);
-            return new StatusCode(HttpStatus.OK, "좋아요 조회 성공").sendResponse();
+            List<Likes> likes = likeRepository.findByEmail(user.get());
+            return new StatusCode(HttpStatus.OK, likes, "좋아요 조회 성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }

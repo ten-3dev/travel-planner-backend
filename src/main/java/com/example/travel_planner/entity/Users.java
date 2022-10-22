@@ -1,5 +1,6 @@
 package com.example.travel_planner.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +26,7 @@ public class Users {
     @Column(nullable = false)
     private java.time.LocalDate birth;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "email", orphanRemoval = true) // 좋아요 쪽 매핑 mappedBy는 필트 명이 아닌 변수 명으로 해야함. orphanRemoval은 삭제, 수정 시 관계되어있거 다 삭제
     private List<Likes> likes;
 

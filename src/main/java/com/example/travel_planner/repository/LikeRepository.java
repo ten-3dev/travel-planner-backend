@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LikeRepository extends JpaRepository<Likes, String> {
-    List<Likes> findByEmail(Users user);
+    List<Likes> findByEmail(Users email);
 }
