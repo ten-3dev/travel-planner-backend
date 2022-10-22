@@ -23,7 +23,6 @@ public class Likes {
     @Column(length = 50, nullable = false)
     private String type;
 
-    @ManyToOne
-    @JoinColumn(name ="id", nullable = false)
-    private Plans id;
+    @Column(length = 50, nullable = false)
+    private String id;
 }
