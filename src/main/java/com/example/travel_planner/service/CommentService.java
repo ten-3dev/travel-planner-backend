@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,13 +46,13 @@ public class CommentService {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }
     }
-
+    @Transactional
     public ResponseEntity getComment(String token){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
             List<Comments> Comments = commentRepository.findAll();
-            return new StatusCode(HttpStatus.OK, Comments, "좋아요 조회 성공").sendResponse();
+            return new StatusCode(HttpStatus.OK, Comments, "댓글 조회 성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }
