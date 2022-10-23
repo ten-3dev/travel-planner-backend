@@ -28,15 +28,19 @@ public class CommentService {
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            Optional<Users> user = userRepository.findById(jwtTokenProvider.getUserEmailFromToken(tokenFilter));
-            Comments comments = Comments.builder()
+            String getCommentFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);//요고 집어넣음
+            Optional<Users> user = userRepository.findById(jwtTokenProvider.getUserEmailFromToken(getCommentFromToken));
+            System.out.println("아리랑" + getCommentFromToken); //확인해봄ㅋ
+
+            Comments comments = Comments.builder() //이중에서 날짜데타를 내가 없앤것같음 요 내용도 한번 고쳐봐야할듯?
                     .id(data.get("id"))
                     .content(data.get("content"))
-                    .date(user.get().getBirth())
                     .type(data.get("type"))
                     .email(user.get())
                     .build();
-            commentRepository.save(comments);
+            System.out.println("아리랑" + comments); //요것도 ㅋ
+
+//            commentRepository.save(comments);
             return new StatusCode(HttpStatus.OK, "댓글 추가 성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
