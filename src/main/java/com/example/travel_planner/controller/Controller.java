@@ -96,22 +96,27 @@ public class Controller {
         return userService.passwordChange(email);
     }
 
-    @PostMapping("getLikes")
+    @PostMapping("/getLikes")
     public ResponseEntity getLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         return likeService.getLikes(token);
     }
 
-    @PostMapping("addLikes")
+    @PostMapping("/addLikes")
     public ResponseEntity addLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
         return likeService.addLikes(token, data);
     }
 
-    @PostMapping("addComment")
+    @DeleteMapping("/removeLikes")
+    public ResponseEntity RemoveLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
+        return likeService.RemoveLikes(token, data);
+    }
+
+    @PostMapping("/addComment")
     public ResponseEntity addComment(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
         return commentService.addComment(token, data);
     }
 
-    @PostMapping("getComment")
+    @PostMapping("/getComment")
     public ResponseEntity getComment(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         return commentService.getComment(token);
     }

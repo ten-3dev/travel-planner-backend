@@ -26,13 +26,13 @@ public class Users {
     @Column(nullable = false)
     private java.time.LocalDate birth;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "email", orphanRemoval = true) // 좋아요 쪽 매핑 mappedBy는 필트 명이 아닌 변수 명으로 해야함. orphanRemoval은 삭제, 수정 시 관계되어있거 다 삭제
-    private List<Likes> likes;
-
-    @OneToMany(mappedBy = "email", orphanRemoval = true) // 댓글 쪽 매핑 mappedBy는 필트 명이 아닌 변수 명으로 해야함
-    private List<Comments> comments;
-
-    @OneToMany(mappedBy = "email", orphanRemoval = true) // 플랜 쪽 매핑 mappedBy는 필트 명이 아닌 변수 명으로 해야함
-    private List<Plans> plans;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "email", orphanRemoval = true) // 좋아요 쪽 매핑 mappedBy는 필트 명이 아닌 변수 명으로 해야함. orphanRemoval은 삭제, 수정 시 관계되어있거 다 삭제
+//    private List<Likes> likes;
+//
+//    @OneToMany(mappedBy = "email", orphanRemoval = true) // 댓글 쪽 매핑 mappedBy는 필트 명이 아닌 변수 명으로 해야함
+//    private List<Comments> comments;
+//
+//    @OneToMany(mappedBy = "email", orphanRemoval = true) // 플랜 쪽 매핑 mappedBy는 필트 명이 아닌 변수 명으로 해야함
+//    private List<Plans> plans;
 }
