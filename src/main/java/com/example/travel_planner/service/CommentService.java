@@ -47,9 +47,9 @@ public class CommentService {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }
     }
-    @Transactional
-    public ResponseEntity getComment(Map<String, String> data){
-        List<Comments> comments = commentRepository.findById(data.get("id"));
+
+    public ResponseEntity getComment(String id){
+        List<Comments> comments = commentRepository.findById(id);
         return new StatusCode(HttpStatus.OK, comments, "조회성공").sendResponse();
     }
     @Transactional

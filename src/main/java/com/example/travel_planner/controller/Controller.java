@@ -119,8 +119,8 @@ public class Controller {
     }
 
     @GetMapping("/getComment")
-    public ResponseEntity getComment(@RequestBody Map<String, String> data){
-        return commentService.getComment(data);
+    public ResponseEntity getComment(@RequestParam String id){
+        return commentService.getComment(id);
     }
     @PostMapping("/getMyPage")
     public ResponseEntity getMyPage(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
