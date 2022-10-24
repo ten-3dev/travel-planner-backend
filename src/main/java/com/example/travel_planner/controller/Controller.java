@@ -118,7 +118,7 @@ public class Controller {
         return commentService.addComment(token, data);
     }
 
-    @PostMapping("/getComment")
+    @GetMapping("/getComment")
     public ResponseEntity getComment(@RequestBody Map<String, String> data){
         return commentService.getComment(data);
     }
