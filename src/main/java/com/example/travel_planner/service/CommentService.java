@@ -48,12 +48,20 @@ public class CommentService {
         }
     }
     @Transactional
-    public ResponseEntity getComment(String token){
+    public ResponseEntity getComment(Map<String, String> data){
+        List<Comments> comments = commentRepository.findById(data.get("id"));
+        System.out.println(comments);
+
+        return new StatusCode(HttpStatus.OK, comments, "댓글임시조회").sendResponse();
+    }
+    @Transactional
+    public ResponseEntity getMyPage(String token){ //토큰 마이페이지 사용할 리스트출력
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            List<Comments> Comments = commentRepository.findAll();
-            return new StatusCode(HttpStatus.OK, Comments, "댓글 조회 성공").sendResponse();
+            String getCommentFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+            Optional<Users> user = userRepository.findById(getCommentFromToken);
+            return new StatusCode(HttpStatus.OK, user, "댓글 조회 성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }

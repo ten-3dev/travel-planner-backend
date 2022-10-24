@@ -2,6 +2,7 @@ package com.example.travel_planner.controller;
 
 import com.example.travel_planner.config.JwtTokenProvider;
 import com.example.travel_planner.config.StatusCode;
+import com.example.travel_planner.entity.Comments;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.service.CommentService;
 import com.example.travel_planner.service.LikeService;
@@ -12,6 +13,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -117,7 +119,12 @@ public class Controller {
     }
 
     @PostMapping("/getComment")
-    public ResponseEntity getComment(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-        return commentService.getComment(token);
+    public ResponseEntity getComment(@RequestBody Map<String, String> data){
+        return commentService.getComment(data);
     }
+    @PostMapping("/getMyPage")
+    public ResponseEntity getMyPage(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        return commentService.getMyPage(token);
+    }
+
 }
