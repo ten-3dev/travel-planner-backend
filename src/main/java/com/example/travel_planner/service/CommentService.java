@@ -50,9 +50,7 @@ public class CommentService {
     @Transactional
     public ResponseEntity getComment(Map<String, String> data){
         List<Comments> comments = commentRepository.findById(data.get("id"));
-        System.out.println(comments);
-
-        return new StatusCode(HttpStatus.OK, comments, "댓글임시조회").sendResponse();
+        return new StatusCode(HttpStatus.OK, comments, "조회성공").sendResponse();
     }
     @Transactional
     public ResponseEntity getMyPage(String token){ //토큰 마이페이지 사용할 리스트출력
