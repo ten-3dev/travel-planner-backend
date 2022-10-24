@@ -51,16 +51,16 @@ public class LikeService {
         }
     }
 
-    public ResponseEntity RemoveLikes(String token, Map<String, String> data){
+    @Transactional
+    public ResponseEntity RemoveLikes(String token, String id){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            Likes likes = likeRepository.findByIdAndEmail(data.get("id"), jwtTokenProvider.getUserEmailFromToken(tokenFilter));
-            System.out.println(likes);
-
-            return new StatusCode(HttpStatus.OK, "회원탈퇴성공").sendResponse();
+            Likes likes = likeRepository.findByIdAndEmail(jwtTokenProvider.getUserEmailFromToken(tokenFilter), id);
+            likeRepository.deleteByIdx(likes.getLikeIdx());
+            return new StatusCode(HttpStatus.OK, "좋아요 삭제 성공").sendResponse();
         }else{
-            return new StatusCode(HttpStatus.UNAUTHORIZED, "회원탈퇴실패").sendResponse();
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
         }
     }
 }

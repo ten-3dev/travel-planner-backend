@@ -106,9 +106,9 @@ public class Controller {
         return likeService.addLikes(token, data);
     }
 
-    @DeleteMapping("/removeLikes")
-    public ResponseEntity RemoveLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
-        return likeService.RemoveLikes(token, data);
+    @DeleteMapping("/removeLikes/{id}")
+    public ResponseEntity RemoveLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable String id){
+        return likeService.RemoveLikes(token, id);
     }
 
     @PostMapping("/addComment")

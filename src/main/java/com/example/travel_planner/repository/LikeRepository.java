@@ -14,4 +14,7 @@ public interface LikeRepository extends JpaRepository<Likes, String> {
 
     @Query(value = "select * from likes where email = :email and id = :id", nativeQuery = true)
     Likes findByIdAndEmail(String email, String id);
+
+    @Query(value = "delete from likes where like_idx = :idx", nativeQuery = true)
+    void deleteByIdx(int idx);
 }
