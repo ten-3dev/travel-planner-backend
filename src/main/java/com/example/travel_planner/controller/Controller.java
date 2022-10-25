@@ -3,6 +3,7 @@ package com.example.travel_planner.controller;
 import com.example.travel_planner.config.JwtTokenProvider;
 import com.example.travel_planner.config.StatusCode;
 import com.example.travel_planner.entity.Comments;
+import com.example.travel_planner.entity.Plans;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.service.CommentService;
 import com.example.travel_planner.service.LikeService;
@@ -125,6 +126,10 @@ public class Controller {
     @PostMapping("/getMyPage")
     public ResponseEntity getMyPage(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         return commentService.getMyPage(token);
+    }
+    @PostMapping("/createPlan")
+    public ResponseEntity createPlan(@RequestBody Map<String, String> plan) {
+        return planService.createPlan(plan);
     }
 
 }
