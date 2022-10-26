@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,6 +29,17 @@ public class LikeService {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
             List<Likes> likes = likeRepository.selectLikeByEmail(jwtTokenProvider.getUserEmailFromToken(tokenFilter));
+            return new StatusCode(HttpStatus.OK, likes, "좋아요 조회 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
+        }
+    }
+
+    public ResponseEntity getLikesPagination(String token, Map<String, Object> data){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
+            List<Likes> likes = likeRepository.selectLikeByEmail(jwtTokenProvider.getUserEmailFromToken(tokenFilter), (String) data.get("type"), (Integer) data.get("offset"));
             return new StatusCode(HttpStatus.OK, likes, "좋아요 조회 성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
@@ -52,13 +64,29 @@ public class LikeService {
     }
 
     @Transactional
-    public ResponseEntity RemoveLikes(String token, String id){
+    public ResponseEntity removeLikes(String token, String id){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
             Likes likes = likeRepository.findByIdAndEmail(jwtTokenProvider.getUserEmailFromToken(tokenFilter), id);
             likeRepository.deleteByIdx(likes.getLikeIdx());
             return new StatusCode(HttpStatus.OK, "좋아요 삭제 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
+        }
+    }
+
+    @Transactional
+    public ResponseEntity getLikesCount(String token){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
+            Map<String, Integer> result = new HashMap<>();
+            int t_like = likeRepository.selectLikeCount(jwtTokenProvider.getUserEmailFromToken(tokenFilter), "T");
+            int p_like = likeRepository.selectLikeCount(jwtTokenProvider.getUserEmailFromToken(tokenFilter), "P");
+            result.put("t_like", t_like);
+            result.put("p_like", p_like);
+            return new StatusCode(HttpStatus.OK, result, "좋아요 갯수 불러오기").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
         }
