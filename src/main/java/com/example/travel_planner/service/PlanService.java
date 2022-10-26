@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
 public class PlanService {
     @Autowired
     private PlanRepository planRepository;
@@ -44,5 +43,23 @@ public class PlanService {
             return new StatusCode(HttpStatus.BAD_REQUEST, "서버에 에러가 발생했습니다.").sendResponse();
         }
     }
+
+    public ResponseEntity getUserPlan(String token){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
+            String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+
+            List<Plans> resultPlans = planRepository.getPlansByEmail(getUserEmailFromToken);
+
+            System.out.println("resultPlans = " + resultPlans);
+
+            return new StatusCode(HttpStatus.OK, resultPlans, "유저 플랜 조회 성공").sendResponse();
+        } else {
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "이미 만료된 유저임").sendResponse();
+        }
+    }
+
+
 }
 

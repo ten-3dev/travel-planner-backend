@@ -143,4 +143,8 @@ public class Controller {
         return planService.createPlan(plan);
     }
 
+    @GetMapping("/getUserPlan")
+    public ResponseEntity getUserPlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return planService.getUserPlan(token);
+    }
 }
