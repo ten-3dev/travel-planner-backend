@@ -2,24 +2,19 @@ package com.example.travel_planner.service;
 
 import com.example.travel_planner.config.JwtTokenProvider;
 import com.example.travel_planner.config.StatusCode;
-import com.example.travel_planner.dto.PlanDTO;
 import com.example.travel_planner.entity.Plans;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.repository.PlanRepository;
 import com.example.travel_planner.repository.UserRepository;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import org.apache.catalina.User;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
+@Service
 public class PlanService {
     @Autowired
     private PlanRepository planRepository;
