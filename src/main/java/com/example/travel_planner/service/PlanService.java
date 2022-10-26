@@ -28,17 +28,17 @@ public class PlanService {
     private UserRepository userRepository;
     public ResponseEntity createPlan(Map<String, String> plan) {
         try{
-
-            System.out.println("plan = " + plan);
-
-            Users user = Users.builder().email(plan.get("email")).build();
-            // DB에 있는 아이디랑 plan.get("email") 동일할때
-            Plans plans = Plans.builder()
-                    .email(user)
-                    .build();
-
-
-            //planRepository.save(plan);
+            List<Users> list = userRepository.findByEmail(plan.get("email"));
+            for (Users users : list){
+                Plans plans = Plans.builder()
+                        .email(users)
+                        .title(plan.get("title"))
+                        .plan(plan.get("plan"))
+                        .date(plan.get("date"))
+                        .type(Integer.parseInt(plan.get("type")))
+                        .build();
+                planRepository.save(plans);
+            }
             return new StatusCode(HttpStatus.OK, "플랜 생성이 완료되었습니다!").sendResponse();
         }catch (Exception e){
             return new StatusCode(HttpStatus.BAD_REQUEST, "서버에 에러가 발생했습니다.").sendResponse();
