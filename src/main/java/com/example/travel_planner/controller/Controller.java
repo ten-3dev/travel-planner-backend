@@ -147,4 +147,9 @@ public class Controller {
     public ResponseEntity getUserPlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         return planService.getUserPlan(token);
     }
+
+    @PutMapping("/updateSharePlan")
+    public ResponseEntity updateSharePlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
+        return planService.updateSharePlan(token, data);
+    }
 }
