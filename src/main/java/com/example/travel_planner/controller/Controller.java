@@ -152,4 +152,12 @@ public class Controller {
     public ResponseEntity updateSharePlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
         return planService.updateSharePlan(token, data);
     }
+    @DeleteMapping(value = "/deleteUserPlan/{id}")
+    public ResponseEntity deleteUserPlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable String id){
+        return planService.deleteUserPlan(token, id);
+    }
+    @GetMapping("/getUserPlanById/{id}")
+    public ResponseEntity getUserPlanById(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable String id){
+        return planService.getUserPlanById(token, id);
+    }
 }

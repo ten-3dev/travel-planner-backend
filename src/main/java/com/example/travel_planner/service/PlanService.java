@@ -2,6 +2,7 @@ package com.example.travel_planner.service;
 
 import com.example.travel_planner.config.JwtTokenProvider;
 import com.example.travel_planner.config.StatusCode;
+import com.example.travel_planner.entity.Likes;
 import com.example.travel_planner.entity.Plans;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.repository.PlanRepository;
@@ -85,6 +86,33 @@ public class PlanService {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }
     }
+
+    public ResponseEntity deleteUserPlan(String token, String id){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
+            Plans plan = planRepository.getPlansByEmailAndId(jwtTokenProvider.getUserEmailFromToken(tokenFilter), id);
+            planRepository.deleteByIdx(plan.getId());
+            return new StatusCode(HttpStatus.OK, "유저 플랜 삭제 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
+        }
+    }
+
+    public ResponseEntity getUserPlanById(String token, String id){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
+            Plans plan = planRepository.getPlansByEmailAndId(jwtTokenProvider.getUserEmailFromToken(tokenFilter), id);
+            if(plan == null){
+                return new StatusCode(HttpStatus.NOT_FOUND, "유저 단일 플랜 조회 못함").sendResponse();
+            }
+            return new StatusCode(HttpStatus.OK, plan, "유저 단일 플랜 조회 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
+        }
+    }
+
 
 }
 

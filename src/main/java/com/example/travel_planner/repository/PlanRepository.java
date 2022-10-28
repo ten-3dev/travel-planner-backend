@@ -12,4 +12,7 @@ public interface PlanRepository extends JpaRepository<Plans, String> {
 
     @Query(value = "select * from plans where email = :email and id = :id", nativeQuery = true)
     Plans getPlansByEmailAndId(String email, String id);
+
+    @Query(value = "delete from plans where id = :idx", nativeQuery = true)
+    void deleteByIdx(int idx);
 }
