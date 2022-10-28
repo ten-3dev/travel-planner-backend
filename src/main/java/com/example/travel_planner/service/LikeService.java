@@ -35,17 +35,6 @@ public class LikeService {
         }
     }
 
-    public ResponseEntity getLikesPagination(String token, Map<String, Object> data){
-        String tokenFilter = token.split(" ")[1];
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            List<Likes> likes = likeRepository.selectLikeByEmail(jwtTokenProvider.getUserEmailFromToken(tokenFilter), (String) data.get("type"), (Integer) data.get("offset"));
-            return new StatusCode(HttpStatus.OK, likes, "좋아요 조회 성공").sendResponse();
-        }else{
-            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
-        }
-    }
-
     public ResponseEntity addLikes(String token, Map<String, String> data){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
@@ -71,22 +60,6 @@ public class LikeService {
             Likes likes = likeRepository.findByIdAndEmail(jwtTokenProvider.getUserEmailFromToken(tokenFilter), id);
             likeRepository.deleteByIdx(likes.getLikeIdx());
             return new StatusCode(HttpStatus.OK, "좋아요 삭제 성공").sendResponse();
-        }else{
-            return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
-        }
-    }
-
-    @Transactional
-    public ResponseEntity getLikesCount(String token){
-        String tokenFilter = token.split(" ")[1];
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-        if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            Map<String, Integer> result = new HashMap<>();
-            int t_like = likeRepository.selectLikeCount(jwtTokenProvider.getUserEmailFromToken(tokenFilter), "T");
-            int p_like = likeRepository.selectLikeCount(jwtTokenProvider.getUserEmailFromToken(tokenFilter), "P");
-            result.put("t_like", t_like);
-            result.put("p_like", p_like);
-            return new StatusCode(HttpStatus.OK, result, "좋아요 갯수 불러오기").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
         }

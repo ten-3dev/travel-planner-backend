@@ -104,12 +104,6 @@ public class Controller {
         return likeService.getLikes(token);
     }
 
-    @PostMapping("/getLikesPagination")
-    public ResponseEntity getLikesPagination(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, Object> data){
-        return likeService.getLikesPagination(token, data);
-    }
-
-
     @PostMapping("/addLikes")
     public ResponseEntity addLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
         return likeService.addLikes(token, data);
@@ -118,11 +112,6 @@ public class Controller {
     @DeleteMapping("/removeLikes/{id}")
     public ResponseEntity removeLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable String id){
         return likeService.removeLikes(token, id);
-    }
-
-    @PostMapping("/getLikesCount")
-    public ResponseEntity getLikesCount(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-        return likeService.getLikesCount(token);
     }
 
     @PostMapping("/addComment")
