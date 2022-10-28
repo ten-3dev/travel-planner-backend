@@ -160,4 +160,9 @@ public class Controller {
     public ResponseEntity getUserPlanById(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable String id){
         return planService.getUserPlanById(token, id);
     }
+
+    @GetMapping("/getShareMyPlan")
+    public ResponseEntity getShareMyPlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return planService.getShareMyPlan(token);
+    }
 }
