@@ -113,6 +113,16 @@ public class PlanService {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }
     }
+    public ResponseEntity getShareMyPlan(String token){ //공유된플랜조회
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
+            List<Plans> PlanType = planRepository.getSharedPlanType(jwtTokenProvider.getUserEmailFromToken(tokenFilter));
+            return new StatusCode(HttpStatus.OK, PlanType, "공유된플랜조회 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
+        }
+    }
 
 
 }
