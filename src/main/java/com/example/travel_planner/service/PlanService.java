@@ -93,6 +93,7 @@ public class PlanService {
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
             Plans plan = planRepository.getPlansByEmailAndId(jwtTokenProvider.getUserEmailFromToken(tokenFilter), id);
             planRepository.deleteByIdx(plan.getId());
+            planRepository.deleteCommentByIdx(plan.getId());
             return new StatusCode(HttpStatus.OK, "유저 플랜 삭제 성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();

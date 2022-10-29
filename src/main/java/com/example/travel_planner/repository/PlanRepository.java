@@ -15,4 +15,7 @@ public interface PlanRepository extends JpaRepository<Plans, String> {
 
     @Query(value = "delete from plans where id = :idx", nativeQuery = true)
     void deleteByIdx(int idx);
+
+    @Query(value = "delete from comments where id = :idx" , nativeQuery = true)
+    void deleteCommentByIdx(int idx);
 }
