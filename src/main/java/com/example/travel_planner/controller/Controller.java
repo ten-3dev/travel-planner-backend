@@ -154,4 +154,5 @@ public class Controller {
     public ResponseEntity getShareMyPlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         return planService.getShareMyPlan(token);
     }
+
 }

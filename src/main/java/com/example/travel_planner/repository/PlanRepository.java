@@ -16,7 +16,6 @@ public interface PlanRepository extends JpaRepository<Plans, String> {
     @Query(value = "select * from plans where email = :email and type = 1", nativeQuery = true)
     List<Plans> getSharedPlanType(String email); //공유된 플랜 조회
 
-
     @Query(value = "delete from plans where id = :idx", nativeQuery = true)
     void deleteByIdx(int idx);
 }
