@@ -124,8 +124,9 @@ public class PlanService {
         }
     }
 
-    public ResponseEntity getPlan(String email){
-    List<Plans> plans =  planRepository.getPlansById(email);
+    public ResponseEntity getPlan(String id){
+    List<Plans> plans =  planRepository.getPlansById(id);
+    System.out.println("가나요:" + plans);
         return new StatusCode(HttpStatus.OK, plans, "공유된플랜보기 조회성공").sendResponse();
     }
 }
