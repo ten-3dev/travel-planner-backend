@@ -155,6 +155,11 @@ public class Controller {
         return planService.getShareMyPlan(token);
     }
     @GetMapping("/getPlan")
-    public ResponseEntity getPlan(@RequestParam String id){ return planService.getPlan(id);}
+    public ResponseEntity getPlan(){ return planService.getPlan();}
+
+    @GetMapping("/getPlansById/{id}")
+    public ResponseEntity getPlansById(@PathVariable String id){
+        return planService.getPlansById(id);
+    }
 
 }
