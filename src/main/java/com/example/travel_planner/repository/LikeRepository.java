@@ -24,4 +24,7 @@ public interface LikeRepository extends JpaRepository<Likes, String> {
 
     @Query(value = "SELECT COUNT(*) FROM likes WHERE email = :email and type = :type", nativeQuery = true)
     int selectLikeCount(String email, String type);
+
+    @Query(value = "delete from likes where id = :id and type = :type", nativeQuery = true)
+    void deleteByIdAndType(int id, String type);
 }

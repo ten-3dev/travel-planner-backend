@@ -5,6 +5,7 @@ import com.example.travel_planner.config.StatusCode;
 import com.example.travel_planner.entity.Likes;
 import com.example.travel_planner.entity.Plans;
 import com.example.travel_planner.entity.Users;
+import com.example.travel_planner.repository.LikeRepository;
 import com.example.travel_planner.repository.PlanRepository;
 import com.example.travel_planner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class PlanService {
     private PlanRepository planRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LikeRepository likeRepository;
 
     public ResponseEntity createPlan(String token, Map<String, String> plan) {
         String tokenFilter = token.split(" ")[1];
@@ -28,7 +31,6 @@ public class PlanService {
         if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
             String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
             Optional<Users> user = userRepository.findById(getUserEmailFromToken);
-            System.out.println("user = " + user);
             try{
                 Plans plans = Plans.builder()
                         .email(user.get())
@@ -45,9 +47,6 @@ public class PlanService {
         }else {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }
-
-
-
     }
 
     public ResponseEntity getUserPlan(String token){
@@ -55,11 +54,7 @@ public class PlanService {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
             String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
-
             List<Plans> resultPlans = planRepository.getPlansByEmail(getUserEmailFromToken);
-
-            System.out.println("resultPlans = " + resultPlans);
-
             return new StatusCode(HttpStatus.OK, resultPlans, "유저 플랜 조회 성공").sendResponse();
         } else {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "이미 만료된 유저임").sendResponse();
@@ -99,9 +94,14 @@ public class PlanService {
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if(jwtTokenProvider.validateAccessToken(tokenFilter)){
-            Plans plan = planRepository.getPlansByEmailAndId(jwtTokenProvider.getUserEmailFromToken(tokenFilter), id);
+            String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+
+            Optional<Users> user = userRepository.findById(getUserEmailFromToken);
+            Plans plan = planRepository.getPlansByEmailAndId(getUserEmailFromToken, id);
+
             planRepository.deleteByIdx(plan.getId());
-            planRepository.deleteCommentByIdx(plan.getId());
+            planRepository.deleteCommentByIdxAndType(plan.getId(), "P");
+            likeRepository.deleteByIdAndType(plan.getId(), "P");    //Type P => Plan
             return new StatusCode(HttpStatus.OK, "유저 플랜 삭제 성공").sendResponse();
         }else{
             return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
@@ -135,14 +135,12 @@ public class PlanService {
     public ResponseEntity getPlan(){
     List<Plans> plans =  planRepository.getPlans();
         Collections.reverse(plans);
-    System.out.println("가나요:" + plans);
+        System.out.println("가나요:" + plans);
         return new StatusCode(HttpStatus.OK, plans, "공유된플랜보기 조회성공").sendResponse();
     }
 
     public ResponseEntity getPlansById(String id){
         Plans plan =  planRepository.getPlansById(id);
-
-        System.out.println("plan = " + plan);
         return new StatusCode(HttpStatus.OK, plan, "단일 플랜 조회 성공").sendResponse();
     }
 
