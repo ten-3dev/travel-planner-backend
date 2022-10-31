@@ -141,6 +141,12 @@ public class Controller {
     public ResponseEntity updateSharePlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
         return planService.updateSharePlan(token, data);
     }
+
+    @PutMapping("updatePlan")
+    public ResponseEntity updatePlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
+        return planService.updatePlan(token, data);
+    }
+
     @DeleteMapping(value = "/deleteUserPlan/{id}")
     public ResponseEntity deleteUserPlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable String id){
         return planService.deleteUserPlan(token, id);

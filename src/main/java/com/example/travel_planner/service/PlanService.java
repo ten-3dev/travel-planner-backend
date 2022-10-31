@@ -135,5 +135,26 @@ public class PlanService {
         System.out.println("plan = " + plan);
         return new StatusCode(HttpStatus.OK, plan, "단일 플랜 조회 성공").sendResponse();
     }
+
+    public ResponseEntity updatePlan(String token, Map<String, String> data){
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
+            Optional<Users> user = userRepository.findById(jwtTokenProvider.getUserEmailFromToken(tokenFilter));
+            Plans resultPlan = planRepository.getPlansById(data.get("id"));
+            Plans plans = Plans.builder()
+                    .id(resultPlan.getId())
+                    .email(user.get())
+                    .title(data.get("title"))
+                    .plan(data.get("plan"))
+                    .date(data.get("date"))
+                    .type(resultPlan.getType())
+                    .build();
+            planRepository.save(plans);
+            return new StatusCode(HttpStatus.OK, "업데이트 성공").sendResponse();
+        }else{
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
+        }
+    }
 }
 
