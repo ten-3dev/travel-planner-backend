@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PlanService {
@@ -126,12 +124,14 @@ public class PlanService {
 
     public ResponseEntity getPlan(){
     List<Plans> plans =  planRepository.getPlans();
+        Collections.reverse(plans);
     System.out.println("가나요:" + plans);
         return new StatusCode(HttpStatus.OK, plans, "공유된플랜보기 조회성공").sendResponse();
     }
 
     public ResponseEntity getPlansById(String id){
         Plans plan =  planRepository.getPlansById(id);
+
         System.out.println("plan = " + plan);
         return new StatusCode(HttpStatus.OK, plan, "단일 플랜 조회 성공").sendResponse();
     }
