@@ -21,23 +21,33 @@ public class PlanService {
     private PlanRepository planRepository;
     @Autowired
     private UserRepository userRepository;
-    public ResponseEntity createPlan(Map<String, String> plan) {
-        try{
-            List<Users> list = userRepository.findByEmail(plan.get("email"));
-            for (Users users : list){
+
+    public ResponseEntity createPlan(String token, Map<String, String> plan) {
+        String tokenFilter = token.split(" ")[1];
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
+            String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
+            Optional<Users> user = userRepository.findById(getUserEmailFromToken);
+            System.out.println("user = " + user);
+            try{
                 Plans plans = Plans.builder()
-                        .email(users)
+                        .email(user.get())
                         .title(plan.get("title"))
                         .plan(plan.get("plan"))
                         .date(plan.get("date"))
                         .type(Integer.parseInt(plan.get("type")))
                         .build();
                 planRepository.save(plans);
+                return new StatusCode(HttpStatus.OK, "플랜 생성이 완료되었습니다!").sendResponse();
+            }catch (Exception e){
+                return new StatusCode(HttpStatus.BAD_REQUEST, "서버에 에러가 발생했습니다.").sendResponse();
             }
-            return new StatusCode(HttpStatus.OK, "플랜 생성이 완료되었습니다!").sendResponse();
-        }catch (Exception e){
-            return new StatusCode(HttpStatus.BAD_REQUEST, "서버에 에러가 발생했습니다.").sendResponse();
+        }else {
+            return new StatusCode(HttpStatus.UNAUTHORIZED, "만료된 토큰").sendResponse();
         }
+
+
+
     }
 
     public ResponseEntity getUserPlan(String token){

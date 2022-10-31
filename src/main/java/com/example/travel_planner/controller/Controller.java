@@ -128,8 +128,8 @@ public class Controller {
         return commentService.getMyPage(token);
     }
     @PostMapping("/createPlan")
-    public ResponseEntity createPlan(@RequestBody Map<String, String> plan) {
-        return planService.createPlan(plan);
+    public ResponseEntity createPlan(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> plan) {
+        return planService.createPlan(token, plan);
     }
 
     @GetMapping("/getUserPlan")
