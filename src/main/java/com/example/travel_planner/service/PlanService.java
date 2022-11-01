@@ -145,6 +145,8 @@ public class PlanService {
 
     public ResponseEntity getPlansById(String id){
         Plans plan =  planRepository.getPlansById(id);
+        int cnt = likeRepository.selectLikeCount(Integer.parseInt(id));
+        plan.setLikeCount(cnt);
         return new StatusCode(HttpStatus.OK, plan, "단일 플랜 조회 성공").sendResponse();
     }
 
