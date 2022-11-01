@@ -15,5 +15,4 @@ public class UserDTO {
     private String profileImage;
     private java.time.LocalDate birth;
     private int tel;
-    private String role;
 }
