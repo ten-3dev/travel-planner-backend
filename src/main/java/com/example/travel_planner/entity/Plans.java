@@ -33,4 +33,9 @@ public class Plans {
 
     @Column(length = 50, nullable = false)
     private String date;
+
+    @Setter
+    @Getter
+    @Transient
+    private int likeCount;
 }

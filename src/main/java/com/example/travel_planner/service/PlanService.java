@@ -136,6 +136,10 @@ public class PlanService {
         List<Plans> plans =  planRepository.getPlans();
         Collections.reverse(plans);
         System.out.println("가나요:" + plans);
+        for(int i = 0; i < plans.size(); i++){
+            int cnt = likeRepository.selectLikeCount(plans.get(i).getId());
+            plans.get(i).setLikeCount(cnt);
+        }
         return new StatusCode(HttpStatus.OK, plans, "공유된플랜보기 조회성공").sendResponse();
     }
 
