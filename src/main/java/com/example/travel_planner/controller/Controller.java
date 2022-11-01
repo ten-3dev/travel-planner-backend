@@ -114,6 +114,11 @@ public class Controller {
         return likeService.removeLikes(token, id);
     }
 
+    @GetMapping("/getLikeCount/{id}")
+    public ResponseEntity getLikeCount(@PathVariable String id){
+        return likeService.getLikeCount(id);
+    }
+
     @PostMapping("/addComment")
     public ResponseEntity addComment(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody Map<String, String> data){
         return commentService.addComment(token, data);
