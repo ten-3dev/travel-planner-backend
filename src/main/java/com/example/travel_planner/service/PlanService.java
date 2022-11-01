@@ -2,13 +2,14 @@ package com.example.travel_planner.service;
 
 import com.example.travel_planner.config.JwtTokenProvider;
 import com.example.travel_planner.config.StatusCode;
-import com.example.travel_planner.entity.Likes;
 import com.example.travel_planner.entity.Plans;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.repository.LikeRepository;
 import com.example.travel_planner.repository.PlanRepository;
 import com.example.travel_planner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -141,6 +142,20 @@ public class PlanService {
             plans.get(i).setLikeCount(cnt);
         }
         return new StatusCode(HttpStatus.OK, plans, "공유된플랜보기 조회성공").sendResponse();
+    }
+
+    public ResponseEntity getPlanWithPagination(String page, String size){
+        Pageable pageRequest = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size));
+        List<Plans> plans = (List<Plans>) planRepository.getPlans(pageRequest);
+        Collections.reverse(plans);
+        for(int i = 0; i < plans.size(); i++){
+            int cnt = likeRepository.selectLikeCount(plans.get(i).getId());
+            plans.get(i).setLikeCount(cnt);
+        }Long totalSize = planRepository.count();
+        List returnData = new ArrayList();
+        returnData.add(totalSize);
+        returnData.add(plans);
+        return new StatusCode(HttpStatus.OK, returnData, "페이지네이션").sendResponse();
     }
 
     public ResponseEntity getPlansById(String id){

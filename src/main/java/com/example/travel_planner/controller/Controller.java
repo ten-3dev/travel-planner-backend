@@ -2,8 +2,6 @@ package com.example.travel_planner.controller;
 
 import com.example.travel_planner.config.JwtTokenProvider;
 import com.example.travel_planner.config.StatusCode;
-import com.example.travel_planner.entity.Comments;
-import com.example.travel_planner.entity.Plans;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.service.CommentService;
 import com.example.travel_planner.service.LikeService;
@@ -14,7 +12,6 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -162,6 +159,13 @@ public class Controller {
     }
     @GetMapping("/getPlan")
     public ResponseEntity getPlan(){ return planService.getPlan();}
+
+    @GetMapping("/getPlanWithPagination")
+    public ResponseEntity getPlanWithPagination(@RequestParam String page, @RequestParam String size){
+        return planService.getPlanWithPagination(page, size);}
+
+
+
 
     @GetMapping("/getPlansById/{id}")
     public ResponseEntity getPlansById(@PathVariable String id){

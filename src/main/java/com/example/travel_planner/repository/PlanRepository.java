@@ -2,6 +2,7 @@ package com.example.travel_planner.repository;
 
 import com.example.travel_planner.entity.Comments;
 import com.example.travel_planner.entity.Plans;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -28,4 +29,7 @@ public interface PlanRepository extends JpaRepository<Plans, String> {
 
     @Query(value = "select * from plans where id = :idx", nativeQuery = true)
     Plans getPlansById(String idx);
+
+    @Query(value = "select * from plans where  type = 1", nativeQuery = true)
+    List<Plans> getPlans(Pageable pageable);
 }
