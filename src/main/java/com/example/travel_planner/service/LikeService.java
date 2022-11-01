@@ -64,4 +64,9 @@ public class LikeService {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
         }
     }
+
+    public ResponseEntity getLikeCount(String id){
+        int cnt = likeRepository.selectLikeCount(Integer.parseInt(id));
+        return new StatusCode(HttpStatus.OK, cnt, "좋아요 수 불러오기 완료").sendResponse();
+    }
 }
