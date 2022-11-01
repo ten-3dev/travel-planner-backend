@@ -133,7 +133,7 @@ public class PlanService {
     }
 
     public ResponseEntity getPlan(){
-    List<Plans> plans =  planRepository.getPlans();
+        List<Plans> plans =  planRepository.getPlans();
         Collections.reverse(plans);
         System.out.println("가나요:" + plans);
         return new StatusCode(HttpStatus.OK, plans, "공유된플랜보기 조회성공").sendResponse();
