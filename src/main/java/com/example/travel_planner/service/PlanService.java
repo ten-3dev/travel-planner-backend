@@ -56,6 +56,7 @@ public class PlanService {
         if (jwtTokenProvider.validateAccessToken(tokenFilter)) {
             String getUserEmailFromToken = jwtTokenProvider.getUserEmailFromToken(tokenFilter);
             List<Plans> resultPlans = planRepository.getPlansByEmail(getUserEmailFromToken);
+            Collections.reverse(resultPlans);
             return new StatusCode(HttpStatus.OK, resultPlans, "유저 플랜 조회 성공").sendResponse();
         } else {
             return new StatusCode(HttpStatus.UNAUTHORIZED, "이미 만료된 유저임").sendResponse();
