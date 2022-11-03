@@ -32,4 +32,7 @@ public interface PlanRepository extends JpaRepository<Plans, String> {
 
     @Query(value = "select * from plans where  type = 1", nativeQuery = true)
     List<Plans> getPlans(Pageable pageable);
+
+    @Query(value = "SELECT COUNT(*) FROM plans WHERE type = 1", nativeQuery = true)
+    Long sharePlanCount();
 }

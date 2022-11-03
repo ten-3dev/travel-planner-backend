@@ -153,7 +153,7 @@ public class PlanService {
         for(int i = 0; i < plans.size(); i++){
             int cnt = likeRepository.selectLikeCount(plans.get(i).getId());
             plans.get(i).setLikeCount(cnt);
-        }Long totalSize = planRepository.count();
+        }Long totalSize = planRepository.sharePlanCount();
         List returnData = new ArrayList();
         returnData.add(totalSize);
         returnData.add(plans);

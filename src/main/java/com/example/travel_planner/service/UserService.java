@@ -55,7 +55,7 @@ public class UserService {
             tokens.put("profileImg", resultEmail.get().getProfileImg());
             return new StatusCode(HttpStatus.OK, tokens, "로그인 성공!").sendResponse();
         }
-        return new StatusCode(HttpStatus.NOT_FOUND, "로그인 실패! 로그인 또는 비밀번호를 확인해주세요.").sendResponse();
+        return new StatusCode(HttpStatus.NOT_FOUND, "로그인 실패! 아이디 또는 비밀번호를 확인해주세요.").sendResponse();
     }
 
     public ResponseEntity checkEmail(Map<String, String> email) {

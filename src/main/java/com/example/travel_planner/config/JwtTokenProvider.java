@@ -11,7 +11,7 @@ public class JwtTokenProvider {
     static final String JWT_SECRET_REFRESH = "asdfs!sdjch8s55/@!!fuck";
     static final String JWT_SECRET_ACCESS = "as_dfaskh!~sdf@SCADFA#211!@!@$";
     static final int JWT_EXPIRATION_REFRESH = 604800000; // 리프레쉬 (7d)
-    static final int JWT_EXPIRATION_ACCESS = 36000; // 액세스 (1h)
+    static final int JWT_EXPIRATION_ACCESS = 1080000; // 액세스 (3h)
 
     public Map<String, String> generateToken(String email){
         Map<String, String> result = new HashMap<>();
