@@ -28,6 +28,7 @@ dependencies {
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.0'
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation 'commons-io:commons-io:2.11.0'
 }
 
 tasks.named('test') {

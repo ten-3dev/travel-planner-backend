@@ -5,16 +5,15 @@ import com.example.travel_planner.config.StatusCode;
 import com.example.travel_planner.entity.Users;
 import com.example.travel_planner.repository.UserRepository;
 import com.example.travel_planner.config.JwtTokenProvider;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.*;
 
 @Service
@@ -250,32 +249,9 @@ public class UserService {
     }
 
     public byte[] getImage(String value) throws IOException {
-        FileInputStream fis = null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-//        String fileDir = "C:\\Users\\YJ\\Downloads\\spring boot\\travel_planner\\build\\classes\\java\\main\\resources\\images\\" + value; // 파일경로
-        String fileDir = resourceLoader.getResource("classpath:").getURI().getPath().toString() + "resources\\images\\" + value;
-
-        try{
-            fis = new FileInputStream(fileDir);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-
-        int readCount = 0;
-        byte[] buffer = new byte[1024];
-        byte[] fileArray = null;
-
-        try{
-            while((readCount = fis.read(buffer)) != -1){
-                baos.write(buffer, 0, readCount);
-            }
-            fileArray = baos.toByteArray();
-            fis.close();
-            baos.close();
-        } catch(IOException e){
-            throw new RuntimeException("File Error");
-        }
-        return fileArray;
+        InputStream imageStream = new FileInputStream("C://images/feed/" + value);
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+        return imageByteArray;
     }
 }
