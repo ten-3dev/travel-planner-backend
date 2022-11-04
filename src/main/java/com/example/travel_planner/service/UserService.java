@@ -249,7 +249,7 @@ public class UserService {
     }
 
     public byte[] getImage(String value) throws IOException {
-        InputStream imageStream = new FileInputStream("C://images/feed/" + value);
+        InputStream imageStream = new FileInputStream("/home/kimminjae2846/travel-planner/imgs/" + value);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
         return imageByteArray;
