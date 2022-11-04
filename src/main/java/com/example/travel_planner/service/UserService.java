@@ -113,12 +113,12 @@ public class UserService {
 
             if(resultEmail.isPresent()){
                 List<String> planList = userRepository.getIdByPlans(getUserEmailFromToken); // 해당 이메일로 된 플랜 데이터 get
+                userRepository.deleteLikesByEmail(getUserEmailFromToken);    // 해당 이메일의 좋아요 목록 삭제
+                userRepository.deleteCommentsByEmail(getUserEmailFromToken); // 해당 이메일의 댓글 목록 삭제
                 userRepository.deletePlanListByLikes(planList); // 해당 이메일로 만든 플랜에 단 좋아요를 제거
                 userRepository.deletePlanListByComments(planList); // 해당 이메일로 만든 플랜에 단 댓글을 제거
                 userRepository.deletePlansById(getUserEmailFromToken); // 해당 이메일로 만든 플랜을 제거
                 userRepository.delete(resultEmail.get());
-                userRepository.deleteLikesByEmail(getUserEmailFromToken);    // 해당 이메일의 좋아요 목록 삭제
-                userRepository.deleteCommentsByEmail(getUserEmailFromToken);
             } else {
                 return new StatusCode(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다.").sendResponse();
             }
