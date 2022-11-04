@@ -186,56 +186,33 @@ public class UserService {
         }
     }
 
-    public ResponseEntity uploadFile(MultipartFile[] multipartFiles, String token){
+    public ResponseEntity uploadFile(MultipartFile file, String token){
         String tokenFilter = token.split(" ")[1];
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         if (!jwtTokenProvider.validateAccessToken(tokenFilter)) { // 인증된 유저
             return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
         }
 
-        Optional<Users> user = userRepository.findById(jwtTokenProvider.getUserEmailFromToken(tokenFilter));
+        Date date = new Date();
+        StringBuilder sb = new StringBuilder();
 
-        try {
-            String UPLOAD_PATH = resourceLoader.getResource("classpath:").getURI().getPath().toString() + "resources\\images";
-            UPLOAD_PATH = UPLOAD_PATH.replace("/", "\\");
-
-            System.out.println(UPLOAD_PATH);
-
-            for(int i = 0; i < multipartFiles.length; i++) {
-                MultipartFile file = multipartFiles[i];
-
-                String fileId = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt()); // 현재 날짜와 랜덤 정수값으로 새로운 파일명 만들기
-                String originName = file.getOriginalFilename(); // ex) 파일.jpg
-                String fileExtension = originName.substring(originName.lastIndexOf(".") + 1); // ex) jpg
-                originName = originName.substring(0, originName.lastIndexOf(".")); // ex) 파일
-                long fileSize = file.getSize(); // 파일 사이즈
-
-                File fileSave = new File(UPLOAD_PATH, fileId + "." + fileExtension); // ex) fileId.jpg
-                if(!fileSave.exists()) { // 폴더가 없을 경우 폴더 만들기
-                    fileSave.mkdirs();
-                }
-
-                Users users = Users.builder().
-                                tel(user.get().getTel())
-                                .email(user.get().getEmail())
-                                .birth(user.get().getBirth())
-                                .name(user.get().getName())
-                                .password(user.get().getPassword())
-                                .profileImg(fileId + "." + fileExtension).build();
-                userRepository.save(users);
-
-
-                file.transferTo(fileSave); // fileSave의 형태로 파일 저장
-
-                System.out.println("fileId= " + fileId);
-                System.out.println("originName= " + originName);
-                System.out.println("fileExtension= " + fileExtension);
-                System.out.println("fileSize= " + fileSize);
-            }
-        } catch(Exception e) {
-            System.out.println(e);
-            return new StatusCode(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 에러!").sendResponse();
+        // file image 가 없을 경우
+        if (file.isEmpty()) {
+            sb.append("none");
+        } else {
+            sb.append(date.getTime());
+            sb.append(file.getOriginalFilename());
         }
+
+        if (!file.isEmpty()) {
+            File dest = new File("/home/kimminjae2846/travel-planner/imgs" + sb.toString());
+            try {
+                file.transferTo(dest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         return new StatusCode(HttpStatus.OK, "업로드 성공").sendResponse();
     }
     @Transactional

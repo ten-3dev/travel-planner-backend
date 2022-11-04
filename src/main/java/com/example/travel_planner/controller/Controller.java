@@ -82,8 +82,8 @@ public class Controller {
     }
 
     @PostMapping("/uploadFile")
-    public ResponseEntity uploadFile(MultipartFile[] multipartFiles, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-        return userService.uploadFile(multipartFiles, token);
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile multipartFile, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        return userService.uploadFile(multipartFile, token);
     }
 
     @GetMapping(value="/image/view", produces= MediaType.IMAGE_PNG_VALUE)
