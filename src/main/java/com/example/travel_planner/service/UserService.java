@@ -192,6 +192,7 @@ public class UserService {
         if (!jwtTokenProvider.validateAccessToken(tokenFilter)) { // 인증된 유저
             return new StatusCode(HttpStatus.UNAUTHORIZED, "토큰 만료").sendResponse();
         }
+        Optional<Users> email = userRepository.findById(jwtTokenProvider.getUserEmailFromToken(tokenFilter));
 
         Date date = new Date();
         StringBuilder sb = new StringBuilder();
@@ -205,9 +206,19 @@ public class UserService {
         }
 
         if (!file.isEmpty()) {
-            File dest = new File("/home/kimminjae2846/travel-planner/imgs" + sb.toString());
+            File dest = new File("/home/kimminjae2846/travel-planner/imgs/" + sb.toString());
             try {
                 file.transferTo(dest);
+                Users users = Users.builder()
+                        .email(email.get().getEmail())
+                        .name(email.get().getName())
+                        .birth(email.get().getBirth())
+                        .password(email.get().getPassword())
+                        .tel(email.get().getTel())
+                        .profileImg(sb.toString())
+                        .build();
+                userRepository.save(users);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
