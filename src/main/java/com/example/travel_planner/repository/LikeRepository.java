@@ -23,4 +23,5 @@ public interface LikeRepository extends JpaRepository<Likes, String> {
 
     @Query(value = "delete from likes where id = :id and type = :type", nativeQuery = true)
     void deleteByIdAndType(int id, String type);
+    
 }

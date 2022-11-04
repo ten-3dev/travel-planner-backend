@@ -20,4 +20,11 @@ public interface UserRepository extends JpaRepository<Users, String> {
 
     @Query(value = "delete from plans where email = :email", nativeQuery = true)
     List<String> deletePlansById(String email);
+
+    @Query(value = "delete from likes where email = :email", nativeQuery = true)
+    void deleteLikesByEmail(String email);
+
+    @Query(value = "delete from comments where email = :email", nativeQuery = true)
+    void deleteCommentsByEmail(String email);
+
 }

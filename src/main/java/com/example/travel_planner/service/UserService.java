@@ -118,6 +118,8 @@ public class UserService {
                 userRepository.deletePlanListByComments(planList); // 해당 이메일로 만든 플랜에 단 댓글을 제거
                 userRepository.deletePlansById(getUserEmailFromToken); // 해당 이메일로 만든 플랜을 제거
                 userRepository.delete(resultEmail.get());
+                userRepository.deleteLikesByEmail(getUserEmailFromToken);    // 해당 이메일의 좋아요 목록 삭제
+                userRepository.deleteCommentsByEmail(getUserEmailFromToken);
             } else {
                 return new StatusCode(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다.").sendResponse();
             }
